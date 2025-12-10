@@ -1,0 +1,50 @@
+# ==============================================================================
+# Expense Manager - Load Balancer (Development)
+# ==============================================================================
+# This configuration runs the Nginx load balancer for development environment
+# Prerequisites:
+#   - expense-manager-api-development container must be running
+#   - expense-manager-app-development container must be running
+#   - expense-manager-network-development must exist
+# ==============================================================================
+
+services:
+  nginx:
+    container_name: expense-manager-nginx-development
+    image: nginx:1.25-alpine
+
+    ports:
+      - "80:80"
+
+    volumes:
+      # Development-specific Nginx configuration
+      - ./nginx/nginx-development.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/maintenance.html:/usr/share/nginx/html/maintenance.html:ro
+
+      # Nginx logs (development)
+      - ./logs/nginx-development:/var/log/nginx
+
+    networks:
+      - expense-manager-network-development
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+    labels:
+      - "app=expense-manager"
+      - "tier=loadbalancer"
+      - "environment=development"
+
+# ==============================================================================
+# Networks
+# ==============================================================================
+# Using external network created by expense-manager-apis
+networks:
+  expense-manager-network-development:
+    external: true
