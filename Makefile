@@ -222,8 +222,8 @@ prod: check-prerequisites-prod
 	@echo "Access points:"
 	@echo "  - HTTP:  http://localhost:80"
 	@echo "  - HTTPS: https://localhost:443"
-	@echo "  - API:   https://your-domain.com/api"
-	@echo "  - App:   https://your-domain.com"
+	@echo "  - API:   https://api.expenser.site/api"
+	@echo "  - App:   https://app.expenser.site"
 	@echo ""
 	@$(MAKE) prod-status
 

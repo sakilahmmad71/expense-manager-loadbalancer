@@ -89,9 +89,9 @@ make prod-down
 
 **Access Points (Production):**
 
-- App: https://app.your-domain.com
-- API: https://api.your-domain.com
-- Health: https://your-domain.com/health
+- App: https://app.expenser.site
+- API: https://api.expenser.site
+- Health: https://expenser.site/health
 
 ## Available Commands
 
@@ -153,8 +153,8 @@ make prod-down
 - **Routing**: Domain-based routing
 - **Ports**: 80 (HTTP) and 443 (HTTPS)
 - **Rate Limiting**: Enabled
-- **API Endpoint**: `https://api.your-domain.com` → `expense-manager-api-production:3000`
-- **App Endpoint**: `https://app.your-domain.com` → `expense-manager-app-production:80`
+- **API Endpoint**: `https://api.expenser.site` → `expense-manager-api-production:3000`
+- **App Endpoint**: `https://app.expenser.site` → `expense-manager-app-production:80`
 - **Maintenance Mode**: Supported
 
 ### Customizing Domain Names
@@ -163,8 +163,8 @@ For production, update the domain names in `nginx/nginx-production.conf`:
 
 ```nginx
 # Change from:
-server_name api.your-domain.com;
-server_name app.your-domain.com;
+server_name api.expenser.site;
+server_name app.expenser.site;
 
 # To your actual domains:
 server_name api.example.com;
@@ -419,7 +419,7 @@ For production deployments with SSL:
 
 For issues or questions:
 
-- Email: support@your-domain.com
+- Email: support@expenser.site
 - GitHub: https://github.com/your-username/expense-manager
 
 ## License
