@@ -1,5 +1,5 @@
 # ==============================================================================
-# Expense Manager - Load Balancer Makefile
+# Expenser - Load Balancer Makefile
 # ==============================================================================
 # This Makefile manages the Nginx Load Balancer container
 # 
@@ -36,7 +36,7 @@ NC := \033[0m # No Color
 ## help: Show this help message
 help:
 	@echo ""
-	@echo "$(BLUE)Expense Manager Load Balancer - Available Commands$(NC)"
+	@echo "$(BLUE)Expenser Load Balancer - Available Commands$(NC)"
 	@echo "======================================================"
 	@echo ""
 	@echo "$(GREEN)Development Commands:$(NC)"

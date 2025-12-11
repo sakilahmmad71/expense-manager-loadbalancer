@@ -1,6 +1,6 @@
-# Expense Manager - Load Balancer
+# Expenser - Load Balancer
 
-Nginx-based load balancer for routing traffic between the Expense Manager API and App containers.
+Nginx-based load balancer for routing traffic between the Expenser API and App containers.
 
 ## Overview
 
@@ -424,4 +424,4 @@ For issues or questions:
 
 ## License
 
-Part of the Expense Manager project.
+Part of the Expenser project.

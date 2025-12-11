@@ -1,5 +1,5 @@
 # ==============================================================================
-# Expense Manager - Load Balancer (Production)
+# Expenser - Load Balancer (Production)
 # ==============================================================================
 # This configuration runs the Nginx load balancer for production environment
 # Prerequisites:
@@ -12,31 +12,31 @@ services:
   nginx:
     container_name: expense-manager-nginx-production
     image: nginx:1.25-alpine
-    
+
     ports:
       - "80:80"
       - "443:443"
-    
+
     volumes:
       # Production-specific Nginx configuration
       - ./nginx/nginx-production.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/maintenance.html:/usr/share/nginx/html/maintenance.html:ro
-      
+
       # Nginx logs (production)
       - ./logs/nginx-production:/var/log/nginx
-    
+
     networks:
       - expense-manager-network-production
-    
+
     restart: always
-    
+
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
-    
+
     deploy:
       resources:
         limits:
@@ -45,7 +45,7 @@ services:
         reservations:
           cpus: "0.1"
           memory: 64M
-    
+
     labels:
       - "app=expense-manager"
       - "tier=loadbalancer"

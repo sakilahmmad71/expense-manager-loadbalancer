@@ -1,5 +1,5 @@
 # ==============================================================================
-# Expense Manager - Load Balancer (Development)
+# Expenser - Load Balancer (Development)
 # ==============================================================================
 # This configuration runs the Nginx load balancer for development environment
 # Prerequisites:
