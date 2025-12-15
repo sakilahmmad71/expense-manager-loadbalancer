@@ -10,7 +10,7 @@
   
   [Features](#overview) •
   [Architecture](#architecture) •
-  [Getting Started](GETTING_STARTED.md) •
+  [Quick Start](#quick-start) •
   [FAQ](FAQ.md) •
   [Contributing](CONTRIBUTING.md) •
   [Support](SUPPORT.md)
@@ -20,7 +20,7 @@
 
 ## 📚 Documentation
 
-- **[Getting Started Guide](GETTING_STARTED.md)** - Quick setup in 5 minutes
+- **[Quick Start](#quick-start)** - Get started in minutes
 - **[Deployment Guide](DEPLOYMENT.md)** - Production deployment walkthrough
 - **[Architecture](ARCHITECTURE.md)** - System architecture and design
 - **[Configuration Examples](examples/)** - Common configuration patterns
