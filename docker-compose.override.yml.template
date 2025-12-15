@@ -1,0 +1,36 @@
+# Docker Compose Override Template
+# Copy this file to docker-compose.override.yml and customize for your local setup
+# The override file is git-ignored for local customizations
+
+version: '3.8'
+
+services:
+  nginx:
+    # Example: Change exposed ports
+    # ports:
+    #   - "8080:80"
+    #   - "8443:443"
+    
+    # Example: Add custom environment variables
+    # environment:
+    #   - CUSTOM_VAR=value
+    
+    # Example: Mount additional configuration
+    # volumes:
+    #   - ./custom-config.conf:/etc/nginx/conf.d/custom.conf:ro
+    #   - ./ssl:/etc/nginx/ssl:ro
+    
+    # Example: Override resource limits
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '0.5'
+    #       memory: 256M
+    #     reservations:
+    #       cpus: '0.25'
+    #       memory: 128M
+    
+    # Example: Add extra hosts
+    # extra_hosts:
+    #   - "api.local:192.168.1.100"
+    #   - "app.local:192.168.1.101"

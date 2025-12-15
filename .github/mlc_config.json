@@ -1,0 +1,19 @@
+{
+	"ignorePatterns": [
+		{
+			"pattern": "https://github.com/sakilahmmad71/expense-manager-*"
+		},
+		{
+			"pattern": "mailto:*"
+		},
+		{
+			"pattern": "https://api.example.com"
+		},
+		{
+			"pattern": "https://app.example.com"
+		},
+		{
+			"pattern": "https://example.com"
+		}
+	]
+}

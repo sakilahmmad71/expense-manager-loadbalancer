@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Nginx Configurations
+        run: |
+          docker run --rm -v ${PWD}/nginx/nginx-development.conf:/etc/nginx/nginx.conf:ro nginx:1.25-alpine nginx -t
+          docker run --rm -v ${PWD}/nginx/nginx-production.conf:/etc/nginx/nginx.conf:ro nginx:1.25-alpine nginx -t
+
+      - name: Create Release Archive
+        run: |
+          # Create release archive excluding development files
+          tar -czf expense-manager-loadbalancer-${GITHUB_REF#refs/tags/}.tar.gz \
+            --exclude='.git' \
+            --exclude='logs' \
+            --exclude='*.log' \
+            --exclude='.github' \
+            .
+
+      - name: Extract Version from Tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Extract Changelog for Version
+        id: extract_changelog
+        run: |
+          # Extract changelog for this version
+          awk '/^## \['"${{ steps.get_version.outputs.VERSION }}"'\]/{flag=1; next} /^## \[/{flag=0} flag' CHANGELOG.md > release_notes.md
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ steps.get_version.outputs.VERSION }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./expense-manager-loadbalancer-${{ github.ref_name }}.tar.gz
+          asset_name: expense-manager-loadbalancer-${{ github.ref_name }}.tar.gz
+          asset_content_type: application/gzip

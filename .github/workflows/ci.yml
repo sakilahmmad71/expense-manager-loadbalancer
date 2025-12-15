@@ -1,0 +1,130 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-nginx-config:
+    name: Validate Nginx Configuration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test Development Config
+        run: |
+          docker run --rm -v ${PWD}/nginx/nginx-development.conf:/etc/nginx/nginx.conf:ro nginx:1.25-alpine nginx -t
+
+      - name: Test Production Config
+        run: |
+          docker run --rm -v ${PWD}/nginx/nginx-production.conf:/etc/nginx/nginx.conf:ro nginx:1.25-alpine nginx -t
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "trivy-results.sarif"
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: "trivy-results.sarif"
+
+  test-docker-build:
+    name: Test Docker Build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        environment: [development, production]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Test Docker Compose Build
+        run: |
+          docker-compose -f docker-compose.${{ matrix.environment }}.yml config
+
+      - name: Test Nginx Container Start
+        run: |
+          # Create required directories
+          mkdir -p logs/nginx-${{ matrix.environment }}
+
+          # Start nginx container for testing
+          docker run -d --name test-nginx-${{ matrix.environment }} \
+            -v ${PWD}/nginx/nginx-${{ matrix.environment }}.conf:/etc/nginx/nginx.conf:ro \
+            -v ${PWD}/nginx/maintenance.html:/usr/share/nginx/html/maintenance.html:ro \
+            nginx:1.25-alpine
+            
+          # Check if nginx is running
+          docker ps | grep test-nginx-${{ matrix.environment }}
+
+          # Test nginx config inside container
+          docker exec test-nginx-${{ matrix.environment }} nginx -t
+
+          # Cleanup
+          docker stop test-nginx-${{ matrix.environment }}
+          docker rm test-nginx-${{ matrix.environment }}
+
+  lint-markdown:
+    name: Lint Markdown
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Lint Markdown files
+        uses: DavidAnson/markdownlint-cli2-action@v13
+        with:
+          globs: "**/*.md"
+
+  check-links:
+    name: Check Links
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check links in markdown files
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: "yes"
+          use-verbose-mode: "yes"
+          config-file: ".github/mlc_config.json"
+
+  test-makefile:
+    name: Test Makefile Commands
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test make help
+        run: make help
+
+      - name: Test prerequisite checks
+        run: |
+          make check-docker
+          make check-docker-compose

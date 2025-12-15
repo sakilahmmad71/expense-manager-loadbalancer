@@ -1,0 +1,80 @@
+{
+	"name": "expense-manager-loadbalancer",
+	"version": "1.0.0",
+	"description": "Nginx-based load balancer for routing traffic between the Expenser API and App containers",
+	"main": "docker-compose.development.yml",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sakilahmmad71/expense-manager-loadbalancer.git"
+	},
+	"keywords": [
+		"nginx",
+		"load-balancer",
+		"reverse-proxy",
+		"docker",
+		"microservices",
+		"expenser",
+		"expense-manager",
+		"api-gateway",
+		"rate-limiting",
+		"security"
+	],
+	"author": {
+		"name": "Shakil Ahmed",
+		"email": "sakilahmmad71@gmail.com",
+		"url": "https://github.com/sakilahmmad71"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/sakilahmmad71/expense-manager-loadbalancer/issues",
+		"email": "sakilahmmad71@gmail.com"
+	},
+	"homepage": "https://github.com/sakilahmmad71/expense-manager-loadbalancer#readme",
+	"scripts": {
+		"dev": "make dev",
+		"dev:logs": "make dev-logs",
+		"dev:status": "make dev-status",
+		"dev:down": "make dev-down",
+		"dev:restart": "make dev-restart",
+		"dev:reload": "make dev-reload",
+		"prod": "make prod",
+		"prod:logs": "make prod-logs",
+		"prod:status": "make prod-status",
+		"prod:down": "make prod-down",
+		"prod:restart": "make prod-restart",
+		"prod:reload": "make prod-reload",
+		"maintenance:enable": "make maintenance-enable",
+		"maintenance:disable": "make maintenance-disable",
+		"maintenance:status": "make maintenance-status",
+		"check:docker": "make check-docker",
+		"check:docker-compose": "make check-docker-compose",
+		"check:prerequisites:dev": "make check-prerequisites-dev",
+		"check:prerequisites:prod": "make check-prerequisites-prod",
+		"test:config": "docker run --rm -v ${PWD}/nginx/nginx-development.conf:/etc/nginx/nginx.conf:ro nginx:1.25-alpine nginx -t && docker run --rm -v ${PWD}/nginx/nginx-production.conf:/etc/nginx/nginx.conf:ro nginx:1.25-alpine nginx -t",
+		"help": "make help"
+	},
+	"engines": {
+		"docker": ">=20.10.0",
+		"docker-compose": ">=2.0.0"
+	},
+	"files": [
+		"nginx/",
+		"examples/",
+		"docker-compose.*.yml",
+		"docker-compose.override.yml.template",
+		"Makefile",
+		"*.md",
+		"LICENSE"
+	],
+	"config": {
+		"nginx_image": "nginx:1.25-alpine",
+		"network_dev": "expense-manager-network-development",
+		"network_prod": "expense-manager-network-production"
+	},
+	"funding": [
+		{
+			"type": "github",
+			"url": "https://github.com/sponsors/sakilahmmad71"
+		}
+	]
+}

@@ -1,6 +1,44 @@
 # Expenser - Load Balancer
 
-Nginx-based load balancer for routing traffic between the Expenser API and App containers.
+<div align="center">
+  <h3>Nginx-based load balancer for routing traffic between the Expenser API and App containers</h3>
+  
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+  [![Nginx](https://img.shields.io/badge/Nginx-1.25-green.svg)](https://nginx.org/)
+  [![CI/CD](https://github.com/sakilahmmad71/expense-manager-loadbalancer/workflows/CI%2FCD%20Pipeline/badge.svg)](https://github.com/sakilahmmad71/expense-manager-loadbalancer/actions)
+  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+  
+  [Features](#overview) •
+  [Architecture](#architecture) •
+  [Getting Started](GETTING_STARTED.md) •
+  [FAQ](FAQ.md) •
+  [Contributing](CONTRIBUTING.md) •
+  [Support](SUPPORT.md)
+</div>
+
+---
+
+## 📚 Documentation
+
+- **[Getting Started Guide](GETTING_STARTED.md)** - Quick setup in 5 minutes
+- **[Deployment Guide](DEPLOYMENT.md)** - Production deployment walkthrough
+- **[Architecture](ARCHITECTURE.md)** - System architecture and design
+- **[Configuration Examples](examples/)** - Common configuration patterns
+- **[FAQ](FAQ.md)** - Frequently asked questions
+- **[Contributing](CONTRIBUTING.md)** - How to contribute
+- **[Security Policy](SECURITY.md)** - Security guidelines and reporting
+- **[Support](SUPPORT.md)** - Getting help and resources
+- **[Changelog](CHANGELOG.md)** - Version history and changes
+- **[Contributors](CONTRIBUTORS.md)** - Project contributors
+
+## 🏗️ Related Repositories
+
+This load balancer is part of the Expenser ecosystem:
+
+- **[expense-manager-apis](https://github.com/sakilahmmad71/expense-manager-apis)** - Backend REST API
+- **[expense-manager-app](https://github.com/sakilahmmad71/expense-manager-app)** - React frontend application
+- **[expense-manager-landing](https://github.com/sakilahmmad71/expense-manager-landing)** - Marketing landing page
+- **[expense-manager-loadbalancer](https://github.com/sakilahmmad71/expense-manager-loadbalancer)** - Nginx load balancer (this repository)
 
 ## Overview
 
@@ -89,9 +127,9 @@ make prod-down
 
 **Access Points (Production):**
 
-- App: https://app.expenser.site
-- API: https://api.expenser.site
-- Health: https://expenser.site/health
+- App: https://app.example.com
+- API: https://api.example.com
+- Health: https://example.com/health
 
 ## Available Commands
 
@@ -153,8 +191,8 @@ make prod-down
 - **Routing**: Domain-based routing
 - **Ports**: 80 (HTTP) and 443 (HTTPS)
 - **Rate Limiting**: Enabled
-- **API Endpoint**: `https://api.expenser.site` → `expense-manager-api-production:3000`
-- **App Endpoint**: `https://app.expenser.site` → `expense-manager-app-production:80`
+- **API Endpoint**: `https://api.example.com` → `expense-manager-api-production:3000`
+- **App Endpoint**: `https://app.example.com` → `expense-manager-app-production:80`
 - **Maintenance Mode**: Supported
 
 ### Customizing Domain Names
@@ -163,12 +201,12 @@ For production, update the domain names in `nginx/nginx-production.conf`:
 
 ```nginx
 # Change from:
-server_name api.expenser.site;
-server_name app.expenser.site;
-
-# To your actual domains:
 server_name api.example.com;
 server_name app.example.com;
+
+# To your actual domains:
+server_name api.yoursite.com;
+server_name app.yoursite.com;
 ```
 
 ## Maintenance Mode
@@ -405,23 +443,48 @@ For production deployments with SSL:
    - Current config assumes SSL is handled upstream
 
 2. **Option 2: Let's Encrypt**
+   - Add certbot service to docker-compose
+   - Mount certificate volumes
+   - Update nginx config with SSL directives
 
-   - Add certbot container
-   - Mount SSL certificates
-   - Update nginx config to use certificates
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👤 Author
+
+**Shakil Ahmed**
+
+- GitHub: [@sakilahmmad71](https://github.com/sakilahmmad71)
+- Email: sakilahmmad71@gmail.com
+
+## 📧 Support
+
+For support, email sakilahmmad71@gmail.com or open an issue in the [GitHub repository](https://github.com/sakilahmmad71/expense-manager-loadbalancer/issues).
+
+---
+
+<div align="center">
+  Made with ❤️ by <a href="https://github.com/sakilahmmad71">Shakil Ahmed</a>
+</div>
+
+2. **Option 2: Let's Encrypt**
+
+   - Add certbot service to docker-compose
+   - Mount certificate volumes
+   - Update nginx config with SSL directives
 
 3. **Option 3: Custom Certificates**
    - Place certificates in `nginx/certs/`
    - Update volume mounts in docker-compose
-   - Update nginx config with ssl directives
-
-## Support
-
-For issues or questions:
-
-- Email: support@expenser.site
-- GitHub: https://github.com/your-username/expense-manager
-
-## License
-
-Part of the Expenser project.
+   - Update nginx config with SSL directives
